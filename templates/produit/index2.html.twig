@@ -1,0 +1,177 @@
+
+{% extends 'base2.html.twig' %}
+
+       {%  block content %}
+
+     
+            <center>   <header class="page-header">
+  <h1><a href="{{ path('app_produit2') }}">
+                                        <i > Liste des produits </i> 
+
+                                </a>      </h1>
+  <form action="/produit/rech" method="get" class="search-form">
+    <label for="search-input">Recherche:</label>
+    <input id="search-input" type="text" name="q" placeholder="Mot-clé">
+    <button class="search-btn" type="submit">Rechercher</button>
+    
+
+    <div style="text-align: center; margin-right: -1000px;" >
+                        <div class="section clear"> 
+                            <div class="col-xs-10 page-subheader sorting pl0">
+                                <ul class="sort-by-list">
+                             
+                                </ul>
+                                
+                            </div>
+                            
+
+                            <div class="col-xs-2 layout-switcher">
+                                {# <a class="layout-list active" href="javascript:void(0);"> <i class="fa fa-th-list"></i>  </a>
+                                <a class="layout-grid active" href="javascript:void(0);"> <i class="fa fa-th"></i> </a>      #}
+                                <a href="{{ path('app_cart') }}">
+                                        <i class="fa fa-shopping-cart"> Mon panier </i> 
+
+                                </a>                     
+                            </div>
+                            <!--/ .layout-switcher-->
+                        </div>
+  </form>
+</header> </center>
+
+<div style="text-align: center; margin-right: -400px;">
+<center left="-62 px">
+<main class="page-content">
+  <section class="product-list">
+    <div class="row">
+      {% for produit in produits %}
+        <div class="col-lg-3 col-md-6 col-sm-12">
+          <div class="product-card">
+            <img src="{{ asset('uploads/produits/' ~ produit.imgP) }}" alt="{{ produit.imgP }}" height="120" width="120">
+            <h2>{{ produit.nomP }}</h2>
+            <p class="description">{{ produit.descriptionP }}</p>
+            <p class="price">{{ produit.prixP }} DT</p>
+            <div class="actions">
+               <form action="{{ path('cart_add',{'id': produit.id}) }}" method="POST">
+                                                <input type="hidden" name="product_id" value="{{ produit.id }}">
+                                                        <button type="submit" class="btn btn-success" >Add to Cart</button>
+                                            </form>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+</main>
+</center>
+<div  style="margin-left: 526px;" >
+        <style>
+ .pagination {
+    height: 40px;
+    margin: 20px 10px;
+}
+
+.pagination ul {
+    display: inline-block;
+    *display: inline;
+    margin-bottom: 0;
+    margin-left: 0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    *zoom: 1;
+    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    padding: 0px;
+}
+
+.pagination li {
+    display: inline;
+}
+
+.pagination a,
+.pagination span {
+    float: left;
+    padding: 0 14px;
+    line-height: 38px;
+    text-decoration: none;
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+    border-left-width: 0;
+}
+
+.pagination a:hover,
+.pagination .active a,
+.pagination .active span {
+    background-color: #f5f5f5;
+}
+
+.pagination .active a,
+.pagination .active span {
+    color: #999999;
+    cursor: default;
+}
+
+.pagination .disabled span,
+.pagination .disabled a,
+.pagination .disabled a:hover {
+    color: #999999;
+    cursor: default;
+    background-color: transparent;
+}
+
+.pagination li:first-child a,
+.pagination li:first-child span {
+    border-left-width: 1px;
+    -webkit-border-radius: 3px 0 0 3px;
+    -moz-border-radius: 3px 0 0 3px;
+    border-radius: 3px 0 0 3px;
+}
+
+.pagination li:last-child a,
+.pagination li:last-child span {
+    -webkit-border-radius: 0 3px 3px 0;
+    -moz-border-radius: 0 3px 3px 0;
+    border-radius: 0 3px 3px 0;
+}
+
+.pagination-centered {
+    text-align: center;
+}
+
+.pagination-right {
+    text-align: right;
+}
+ </style>
+                                 {{ knp_pagination_render(produits) }} 
+                    
+                                     </div>
+                        </div>
+
+                        
+               <script>
+               function confirmRemoveItem(itemId) {
+    Swal.fire({
+        title: 'Vous étes Sure?',
+        text: 'Vous ne pourrez pas récupérer cet article!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'oui, supprimer!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = '/annonce/remove/' + itemId;
+        }
+    });
+}
+               </script>  
+
+
+
+        
+        
+{% endblock %}
+
+
+  

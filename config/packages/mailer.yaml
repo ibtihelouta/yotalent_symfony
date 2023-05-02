@@ -1,0 +1,3 @@
+framework:
+    mailer:
+        dsn: 'gmail+smtp://hamza.bourguiga@esprit.tn:FuckUPeople@localhost?encryption=ssl&auth_mode=login'

@@ -1,0 +1,116 @@
+{% extends 'base2.html.twig' %}
+
+
+{% block content %}
+
+    
+<div class="properties-area recent-property" style="background-color: #FFF;">
+            <div class="container">   
+                <div class="row">
+
+              <di>  <a href="{{ path('app_produit2') }}">
+                                        <i > Retour  </i> 
+
+                                </a>      </div>
+    {# index.html.twig #}
+    <br>
+<section> <h2> Votre panier :</h2></section>
+<br>
+<style>
+      table,
+      th,
+      td {
+        padding: 10px;
+        border: 1px double ;
+        border-collapse: collapse;
+        
+      }
+    </style>
+<div>
+<table>
+<colgroup>
+
+<col style="width:800px">
+
+</col>
+
+<col>
+
+</colgroup>
+    <thead>
+        <tr>
+            <th>Réference du produit</th>
+            <th>Nom du produit</th>
+            <th> Image </th>
+            <th>Prix</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in cart %}
+            <tr>
+                <td>{{ item.product.idP }}</td>
+                <td>{{ item.product.nomP }}</td>
+                <td><div>
+                                            <a href="property-1.html" ><img src="{{ asset('uploads/produits/' ~ item.product.imgP) }}" height="100" width="100" ></a>
+                                        </div></td>
+                <td>{{ item.product.prixP   }} DNT</td>
+                <td>
+                        
+                        <a href="{{path("cart_remove", {id: item.product.id})}}"  class="btn btn-warning">
+                            <i class="bi bi-cart-dash"> Supprimer</i>
+                        </a>
+                       
+                    </td>
+            
+            
+            </tr>
+        {% endfor %}
+    </tbody>
+</table> 
+
+
+{% set total = 0 %}
+
+{% for p in cart %}
+    {% set total = total + p.product.prixP %}
+{% endfor %}
+<br>
+                                <div class="wizard-footer">
+                                    <div class="pull-right">
+                                        <h2> Total Prix : {{total}} DNT </h2>                                   
+                                        
+                                    </div>
+
+                                    <div class="pull-left">
+                                        <a href="{{path("app_produit2")}}" >
+                                        <input type="button" class="btn btn-previous btn-default" name="previous" value="Previous">
+                                        </a>
+                                    </div>
+                                    <div class="clearfix"></div>                                            
+                                </div>
+
+
+                                <br>
+
+
+<div class="wizard-footer">
+                                    <div class="pull-right">
+                                        <a href="{{path("add_commande")}}" >
+                                        <input type="button" class="btn btn-finish btn-primary " name="finish" value="Passer votre commande !" style="display: inline-block;">
+                                    </a>
+                                    </div>
+
+                                    <div class="pull-left">
+                                        <a href="{{path("app_produit2")}}" >
+                                        <input type="button" class="btn btn-previous btn-default" name="previous" value="Previous">
+                                        </a>
+                                    </div>
+                                    <div class="clearfix"></div>                                            
+                                </div>
+
+
+</div>
+</div>
+    <br>
+{% endblock %}
+

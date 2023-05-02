@@ -1,0 +1,66 @@
+{% extends 'base2.html.twig' %}
+
+
+
+{% block title %}Confirmation de commande{% endblock %}
+
+{% block content %}
+<div id="main-content">
+            <div class="container-fluid">
+
+                <div class="block-header py-lg-4 py-3">
+                    <div class="row g-3">
+                        <div class="col-md-6 col-sm-12">
+                            <h2 class="m-0 fs-5"><a href="javascript:void(0);" class="btn btn-sm btn-link ps-0 btn-toggle-fullwidth"><i class="fa fa-arrow-left"></i></a>  </h2>
+                            
+                             
+
+                                                <div>  <a href="{{ path('app_produit2') }}">
+                                                                <i > Retour  </i> 
+
+                                                        </a>      
+                                                </div>
+                                        {# index.html.twig #}
+                                                            
+
+                        </div>
+                     
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row g-3">
+    <div class="container">
+    <style>
+      table,
+      th,
+      td {
+        padding: 10px;
+        border: 1px double ;
+        border-collapse: collapse;
+        
+      }
+    </style>
+        <h1>Confirmation de commande</h1>
+        <br>
+        <center><h2>Merci pour votre commande !</h2></center>
+    <br>
+         <div class="pull-right">                                
+                                        
+                                        <input type="button" class="btn btn-finish btn-primary " name="finish" value="le paiment sera sur place! apres la livraison" style="display: inline-block;">
+                                    
+                                    </div>
+                                    <br>
+        
+
+ 
+
+        
+        
+    
+       
+        
+
+    </div>
+{% endblock %}

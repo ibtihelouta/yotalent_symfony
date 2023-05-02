@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block title %}Confirmation de commande{% endblock %}
+
+{% block content %}
+<div id="main-content">
+            <div class="container-fluid">
+
+                <div class="block-header py-lg-4 py-3">
+                    <div class="row g-3">
+                        <div class="col-md-6 col-sm-12">
+                            <h2 class="m-0 fs-5"><a href="javascript:void(0);" class="btn btn-sm btn-link ps-0 btn-toggle-fullwidth"><i class="fa fa-arrow-left"></i></a>  Liste des Commandes  </h2>
+                          
+                        </div>
+                     
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row g-3">
+    <div class="container">
+    <style>
+      table,
+      th,
+      td {
+        padding: 10px;
+        border: 1px double ;
+        border-collapse: collapse;
+        
+      }
+    </style>
+      
+        
+        <table>
+        
+        <thead>
+                        <tr>
+                            <th>commande</th>
+                            <th>Nom du client </th>
+                            <th>Prenom du client  </th>
+                            <th>Adresse de livraison</th>
+                            <th>Prix total des Produits :</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+{% for c in commandes %}
+      <tr>
+        <td>{{ c.id }}</td>
+                <td>{{ c.NomClient }}</td>
+                <td>{{ c.PrenomClient }}</td>
+                <td>{{ c.adresse }}</td>
+                <td>{{ c.prix_total }} DNT</td>
+               <td> 
+                <a href="{{ path ('commande_delete', {'id': c.id}) }}">
+               <button type="submit" class="btn btn-primary" > Delete </button>
+               </a>
+               </td>
+
+                
+            </form>
+
+ 
+
+        
+        
+    </tr>
+        {% endfor %}
+        </tbody>
+</table>
+    </div>
+{% endblock %}
