@@ -34,8 +34,6 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            // encode the plain password
-
             $file = $form->get('image')->getData();
             if($file)
             {

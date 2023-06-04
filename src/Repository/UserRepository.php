@@ -92,14 +92,13 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
 
     
-    public function sendEmail($email, $message)
+    public function sendEmail($toemail, $message)
     {
         $email = (new Email())
-            ->from('your_email@example.com')
-            ->to($email)
-            ->subject('Hello Email')
+            ->from('smtp@noiroublanc.tn')
+            ->to($toemail)
+            ->subject('Reset Password')
             ->html($message);
-
         $this->mailer->send($email);
     }
 
