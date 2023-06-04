@@ -4,7 +4,10 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,14 +29,37 @@ class UserController extends AbstractController
     }
 
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, UserRepository $userRepository): Response
+    public function new(EntityManagerInterface $entityManager ,Request $request, UserRepository $userRepository,UserPasswordHasherInterface $userPasswordHasher): Response
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $userRepository->save($user, true);
+            $file = $form->get('image')->getData();
+            if($file)
+            {
+                $fileName = md5(uniqid()).'.'.$file->guessExtension();
+                try {
+                    $file->move(
+                        $this->getParameter('images_directory'),
+                        $fileName
+                    );
+                } catch (FileException $e){
+
+                }
+                $user->setImage($fileName);
+            }
+
+            $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                )
+            );
+
+            $entityManager->persist($user);
+            $entityManager->flush();
 
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -62,7 +88,6 @@ class UserController extends AbstractController
             //get form data in in variables
             $name = $form->get('name')->getData();
             $email = $form->get('email')->getData();
-            $roles = $form->get('roles')->getData();
             $file = $form->get('image')->getData();
             if($file)
             {
@@ -79,18 +104,9 @@ class UserController extends AbstractController
             }else{
                 $fileName = $user->getImage();
             }
-
-    
-        if (is_array($roles)) {
-            $rolesString = implode(', ', $roles);
-        } else {
-            $rolesString = (string) $roles;
-        }
-        var_dump($rolesString);
-        die();
         
             //update user
-        // $userRepository->updateUser($id, $name, $email, $rolesString, $fileName);
+        $userRepository->updateUser($id, $name, $email, $fileName);
             
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
         }

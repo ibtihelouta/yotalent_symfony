@@ -45,7 +45,7 @@ class ResetPasswordController extends AbstractController
                 ';
 
 
-                // $entityManager->getRepository(User::class)->sendEmail($email,$html);
+                $entityManager->getRepository(User::class)->sendEmail($email,$html);
                 return $this->redirectToRoute('app_login');
             }
         }

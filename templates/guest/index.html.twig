@@ -5,6 +5,12 @@
 
 {% block body %}
 	<div class="container">
+		{% if app.user %}
+			<div class="mb-3">
+				You are logged in as
+				{{ app.user.userIdentifier }},
+			</div>
+		{% endif %}
 		<h1 style="margin-top:30px" class="text-center mb-4">hello
 			{{ user.name }}</h1>
 		<center><img style="border-radius: 50%; object-fit: cover;" src="{{ asset('uploads/images/' ~ user.image) }}" width="150px" height="150px"/></center>
