@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\UserRepository;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -41,5 +42,22 @@ class MobileAppController extends AbstractController
     
         return new JsonResponse(['message' => 'User added successfully'], JsonResponse::HTTP_CREATED);
     }
+    #[Route('/mobile/app/user/delete', name: 'app_mobile_app_delete_user', methods: ['POST'])]
+    public function deleteUser(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        $id = $data['id'];
+        $user = $userRepository->getUserById($id);
+        
+        if (!$user) {
+            return new JsonResponse(['message' => 'User not found'], JsonResponse::HTTP_NOT_FOUND);
+        }
+        
+        $entityManager->remove($user);
+        $entityManager->flush();
+    
+        return new JsonResponse(['message' => 'User deleted successfully'], JsonResponse::HTTP_OK);
+    }
+    
 
 }

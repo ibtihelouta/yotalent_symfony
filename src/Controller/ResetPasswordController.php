@@ -10,10 +10,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 class ResetPasswordController extends AbstractController
 {
     #[Route('/reset-password', name: 'reset_password')]
-    public function resetPassword(Request $request, EntityManagerInterface $entityManager)
+    public function resetPassword(Request $request, EntityManagerInterface $entityManager , MailerInterface $mailer)
     {
         
         $form = $this->createForm(ResetPasswordType::class);
@@ -21,8 +23,8 @@ class ResetPasswordController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $email = $data->getEmail();
-            $user = $entityManager->getRepository(User::class)->getUserByEmail($email);
+            $toemail = $data->getEmail();
+            $user = $entityManager->getRepository(User::class)->getUserByEmail($toemail);
             
             if ($user) {
                 // Generate and save the reset code
@@ -37,15 +39,19 @@ class ResetPasswordController extends AbstractController
                     <body>
                         <p>Hi user,</p>
                         <p>Someone has requested a link to change your password. You can do this through the link below.</p>
-                        <p><a href="http://localhost:8000/verify-reset-code/'.$resetCode.'">Change my password</a></p>
+                        <p><a href="http://127.0.0.1:8000/verify-reset-code/'.$resetCode.'">Change my password</a></p>
                         <p>If you didn\'t request this, please ignore this email.</p>
                         <p>Your password won\'t change until you access the link above and create a new one.</p>
                     </body>
                 </html>
                 ';
+                $email = (new Email())
+                ->from('yo.talent7@gmail.com')
+                ->to($toemail)
+                ->subject('Reset Password')
+                ->html($html);
+                 $mailer->send($email);
 
-
-                $entityManager->getRepository(User::class)->sendEmail($email,$html);
                 return $this->redirectToRoute('app_login');
             }
         }
