@@ -1,0 +1,19 @@
+### get all blogs
+POST http://127.0.0.1:8000/mobile/app HTTP/1.1
+content-type: application/json 
+
+{
+
+}
+### get all blogs
+POST http://127.0.0.1:8000/mobile/app/user HTTP/1.1
+content-type: application/json 
+
+{
+    "name": "ddddd",
+    "email": "sdfsdjuerwersdfjuf@sdfsdfsdfdssd.com",
+    "role": "ROLE_USER",
+    "image":"placeholder.jpg",
+    "password": "123456"
+
+}
