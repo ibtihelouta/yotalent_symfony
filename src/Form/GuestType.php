@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Image;
 
 
-class UserType extends AbstractType
+class GuestType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
 
@@ -23,16 +23,6 @@ class UserType extends AbstractType
                 'attr' => ['class' => 'form-control mb-3'],
             ])
             ->add('email', TextType::class, [
-                'attr' => ['class' => 'form-control mb-3'],
-            ])
-            ->add('roles', ChoiceType::class, [
-                'choices' => [
-                    'User' => 'ROLE_USER',
-                    'Organization' => 'ROLE_ORG',
-                    'Admin' => 'ROLE_ADMIN',
-                ],
-                'expanded' => true,
-                'multiple' => true,
                 'attr' => ['class' => 'form-control mb-3'],
             ])
             ->add('image', FileType::class, [

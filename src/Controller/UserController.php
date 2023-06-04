@@ -14,14 +14,12 @@ use BaconQrCode\Writer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 
-#[Route('/user')]
+#[Route('/admin')]
 class UserController extends AbstractController
 {
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
-//        $user = $this->getUser();
-
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
         ]);
@@ -55,14 +53,45 @@ class UserController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, User $user, UserRepository $userRepository): Response
+    public function edit($id, Request $request, User $user, UserRepository $userRepository ): Response
     {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $userRepository->save($user, true);
+            //get form data in in variables
+            $name = $form->get('name')->getData();
+            $email = $form->get('email')->getData();
+            $roles = $form->get('roles')->getData();
+            $file = $form->get('image')->getData();
+            if($file)
+            {
+                $fileName = md5(uniqid()).'.'.$file->guessExtension();
+                try {
+                    $file->move(
+                        $this->getParameter('images_directory'),
+                        $fileName
+                    );
+                } catch (FileException $e){
 
+                }
+                $user->setImage($fileName);
+            }else{
+                $fileName = $user->getImage();
+            }
+
+    
+        if (is_array($roles)) {
+            $rolesString = implode(', ', $roles);
+        } else {
+            $rolesString = (string) $roles;
+        }
+        var_dump($rolesString);
+        die();
+        
+            //update user
+        // $userRepository->updateUser($id, $name, $email, $rolesString, $fileName);
+            
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -111,5 +140,4 @@ class UserController extends AbstractController
             return new Response($jsonc);
         }
     }
-    
 }

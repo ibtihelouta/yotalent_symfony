@@ -7,10 +7,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+// #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -30,7 +31,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed motpass
      */
-    #[ORM\Column]
+    #[ORM\Column(name: "motpass")]
     #[Groups(['user', 'posts:read'])]
     private ?string $motpass = null;
 
@@ -42,7 +43,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user', 'posts:read'])]
     private ?string $image = null;
 
+    #[ORM\Column(name: "reset_code", nullable: true)]
+    private ?string $resetCode = null;
 
+    /**
+     */
+    private ?string $confirmPassword = null;
 
     public function getId(): ?int
     {
@@ -77,8 +83,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $role = $this->role;
-        // guarantee every user at least has ROLE_USER
-        $role = 'ROLE_USER';
         $role = explode(',', $role);
 
         return array_unique($role);
@@ -86,6 +90,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setRoles(string $role): self
     {
+
         $this->role = $role;
 
         return $this;
@@ -111,8 +116,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function eraseCredentials()
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
     }
 
     public function getName(): ?string
@@ -135,6 +138,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setImage(string $image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getResetCode(): ?string
+    {
+        return $this->resetCode;
+    }
+
+    public function setResetCode(?string $resetCode): self
+    {
+        $this->resetCode = $resetCode;
+
+        return $this;
+    }
+
+    public function getConfirmPassword(): ?string
+    {
+        return $this->confirmPassword;
+    }
+
+    public function setConfirmPassword(?string $confirmPassword): self
+    {
+        $this->confirmPassword = $confirmPassword;
 
         return $this;
     }

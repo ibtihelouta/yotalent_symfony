@@ -1,0 +1,43 @@
+{# {% extends 'back.html.twig' %}
+
+{% block title %}Edit User{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="mb-4">Edit User</h1>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
+                {{ include('user/_delete_form.html.twig', {'button_label': 'Update'}) }}
+            </div>
+        </div>
+    </div>
+{% endblock %} #}
+
+{% extends 'back.html.twig' %}
+
+{% block title %}Edit User
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<h1 class="mb-4">Edit User</h1>
+		<br>
+		<br>
+		<a href="/guest">back to account</a>
+
+		<div class="row justify-content-center">
+			<div class="col-lg-6">
+				{{ form_start(form) }}
+				{{ form_row(form.name, {'attr': {'class': 'form-control mb-3'}}) }}
+				{{ form_row(form.email, {'attr': {'class': 'form-control mb-3'}}) }}
+				{{ form_row(form.image, {'attr': {'class': 'form-control-file mb-3'}}) }}
+				<button type="submit" class="btn btn-primary">Update</button>
+				{{ form_end(form) }}
+
+				{{ include('user/_delete_form.html.twig', {'button_label': 'Delete'}) }}
+			</div>
+		</div>
+	</div>
+{% endblock %}

@@ -31,6 +31,13 @@ class RegistrationFormType extends AbstractType
             return (string) $role;
         }, $roles);
         $builder
+        ->add('name', null, [
+            'constraints' => [
+                new NotBlank([
+                    'message' => 'Please enter a name',
+                ]),
+            ],
+        ])
         ->add('email', null, [
             'constraints' => [
                 new Email([
@@ -96,9 +103,7 @@ class RegistrationFormType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
-            ])
-
-        ;
+            ]);
         
     }
 

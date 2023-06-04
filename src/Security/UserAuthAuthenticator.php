@@ -67,19 +67,21 @@ public function authenticate(Request $request): Passport
     
         // Get the user role
         $userRole = $token->getUser()->getRoles()[0];
-    
+
         // Use a switch case to redirect to the appropriate page
         switch($userRole) {
-            case 'Admin':
+            case 'ROLE_ADMIN':
                 
                 return new RedirectResponse($this->urlGenerator->generate('app_user_index'));
-            case 'User':
-                return new RedirectResponse($this->urlGenerator->generate('app_user_index'));
+            case 'ROLE_USER':
+                //store the user id in session
+                $request->getSession()->set('user_id', $token->getUser()->getId());
+                return new RedirectResponse($this->urlGenerator->generate('app_guest'));
 
-                case 'Organization':
-                    return new RedirectResponse($this->urlGenerator->generate('app_user_index'));
+                case 'ROLE_ORG':
+                    return new RedirectResponse($this->urlGenerator->generate('app_guest'));
             default:
-                return new RedirectResponse($this->urlGenerator->generate('app_user_index'));
+                return new RedirectResponse($this->urlGenerator->generate('app_guest'));
         }
     }
     
